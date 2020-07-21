@@ -1,0 +1,8 @@
+services:
+    - docker
+
+before_install:
+    - docker build -t dragon3h/frontend-docker -f Dockerfile.dev .
+
+script:
+    - docker run -e CI=true dragon3h/frontend-docker npm run test
