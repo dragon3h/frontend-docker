@@ -1,0 +1,16 @@
+sudo: required
+language: generic
+
+services:
+  - docker
+
+before_install:
+  - docker build -t dragon3h/docker-react -f Dockerfile.dev .
+
+script:
+  - docker run -e CI=true dragon3h/docker-react npm run test
+
+  # safelist
+branches:
+  only:
+  - main
