@@ -4,13 +4,25 @@ language: generic
 services:
   - docker
 
+    # safelist
+branches:
+  only:
+  - main
+
 before_install:
   - docker build -t dragon3h/docker-react -f Dockerfile.dev .
 
 script:
   - docker run -e CI=true dragon3h/docker-react npm run test -- --coverage
 
-  # safelist
-branches:
-  only:
-  - main
+deploy:
+  provider: elasticbeanstalk
+  region: 'ca-central-1'
+  app: 'frontend-react'
+  env: 'Frontendreact-env'
+  bucket_name: 'elasticbeanstalk-ca-central-1-868655521662'
+  bucket_path: 'frontend-react'
+  on:
+    branch: main
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
